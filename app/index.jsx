@@ -7,6 +7,7 @@ import Slideshow from "./components/Slideshow";
 import Controls from "./components/Controls";
 import mainReducer from "./data/reducers";
 import middleware from "./utils/firebase-middleware";
+// import middleware from "./utils/action-history-middleware";
 import slides from "./data/slides";
 import { getOrElse, toMaybe } from "utils/maybe";
 
@@ -67,6 +68,7 @@ dispatch({
 dispatch({
   type: "REMOTE_FB_SLIDES",
   firebase: {
-    ref: "value"
+    ref: "slides",
+    mothod: "value"
   }
 });

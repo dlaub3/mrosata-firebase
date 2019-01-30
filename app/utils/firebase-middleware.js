@@ -4,21 +4,10 @@ import 'firebase/database'
 import config from '../../firebase.config'
 import Observable from 'zen-observable'
 
+firebase.initializeApp(config);
 
+const database = firebase.database();
 
-// const database = firebase.database();
-// database
-//   .ref("slides")
-//   // .set(require('../demo-firebase-slides.json').slides);
-//   .on("value", fbSlides => {
-//     if (fbSlides.hasChildren()) {
-//       fbSlides.forEach(slide => {
-//         console.log(slide.val().title);
-//       });
-//     }
-//   });
-
-firebase.initializeApp(config)
 
 const {
   curry,
@@ -40,14 +29,7 @@ function getFirebaseObservable(ref, evtType) {
     }
     try {
       // Start listening
-      database.ref(ref)
-        .on("value", fbSlides => {
-          if (fbSlides.hasChildren()) {
-            fbSlides.forEach(slide => {
-              console.log(slide.val().title);
-            });
-          }
-        });
+      database.ref(ref).on(evtType, listener)
     } catch (e) {
       observer.error(e.message)
       observer.complete()
@@ -63,7 +45,6 @@ function getFirebaseObservable(ref, evtType) {
 
 // Handle Firebase Actions
 function handleFirebaseAction(store, reducer, listeners = {}) {
-  getFirebaseObservable();
   return (state, action = {}) => {
     // Our custom middleware
     const {
